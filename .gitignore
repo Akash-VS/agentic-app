@@ -1,4 +1,40 @@
+# Virtual environments
 venv/
+env/
+.venv/
+ENV/
+
+# Python cache
 __pycache__/
-.env
 *.pyc
+*.pyo
+*.pyd
+*$py.class
+
+# Environment variables
+.env
+.envrc
+
+# Build / distribution
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints
+
+# Test / coverage
+htmlcov/
+.coverage
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
