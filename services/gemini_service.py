@@ -1,9 +1,8 @@
-
 import google.generativeai as genai
 from config import GEMINI_API_KEY, GEMINI_MODEL
 
-# Create client
-client = genai.Client(api_key=GEMINI_API_KEY)
+# Configure Gemini
+genai.configure(api_key=GEMINI_API_KEY)
 
 
 # 🔹 Text Generation
@@ -17,10 +16,9 @@ User Input:
 """
 
     try:
-        response = client.models.generate_content(
-            model=GEMINI_MODEL,
-            contents=full_prompt
-        )
+        model = genai.GenerativeModel(GEMINI_MODEL)
+
+        response = model.generate_content(full_prompt)
 
         return response.text if response and response.text else "No response generated."
 
@@ -29,20 +27,16 @@ User Input:
         return "Gemini failed to generate response."
 
 
-
-from google.genai import types
-
+# 🔹 OCR / Screenshot Text Extraction
 def extract_text_with_gemini(image_bytes: bytes):
 
     try:
-        response = client.models.generate_content(
-            model=GEMINI_MODEL,
-            contents=[
+        model = genai.GenerativeModel(GEMINI_MODEL)
+
+        response = model.generate_content(
+            [
                 "Extract all visible programming error text from this image clearly.",
-                types.Part.from_bytes(
-                    data=image_bytes,
-                    mime_type="image/png"
-                )
+                {"mime_type": "image/png", "data": image_bytes},
             ]
         )
 
@@ -51,5 +45,3 @@ def extract_text_with_gemini(image_bytes: bytes):
     except Exception as e:
         print("Gemini OCR error:", str(e))
         return "Failed to extract text from image."
-
-# You can add more Gemini-related functions here as needed.
